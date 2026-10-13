@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6d4aff">
+<title>Classify a Triangle</title>
+<style>
+:root{color-scheme:light;--ink:#252443;--muted:#626079;--purple:#6941db;--line:#e8e4f4;--green:#176449;--red:#a32d43}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;min-height:100svh;background:radial-gradient(circle at 8% 10%,#fbe4a2,transparent 38%),radial-gradient(circle at 95% 80%,#bceee8,transparent 42%),#eeeaff;font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);padding:24px 16px;display:grid;place-items:center}button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:focus-visible,summary:focus-visible{outline:3px solid #252443;outline-offset:4px}button:disabled{cursor:default}button:not(:disabled):active{transform:translateY(1px)}[hidden]{display:none!important}.widget{width:min(100%,660px);background:#fff;border:1px solid #fff;border-radius:28px;padding:26px;box-shadow:0 16px 60px #46338218}.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.7px;color:var(--purple);margin:0 0 8px;text-transform:uppercase}h1{font-size:clamp(26px,5vw,36px);letter-spacing:-1.2px;line-height:1.12;margin:0 0 9px}.intro{font-size:15px;line-height:1.5;color:var(--muted);margin:0}.status{display:flex;justify-content:space-between;gap:12px;margin-top:22px;font-size:14px;font-weight:750}.track{height:8px;background:#eeebf6;border-radius:10px;margin:10px 0 18px;overflow:hidden}.track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8d65ef,#39b9b0);transition:width .2s}.drawing{background:linear-gradient(130deg,#f4f0ff,#eefaf8);border:1px solid var(--line);border-radius:20px;position:relative}.badge{position:absolute;top:12px;left:14px;background:white;color:var(--muted);font-size:11px;font-weight:800;padding:6px 9px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}svg{width:100%;height:auto;display:block;aspect-ratio:480/300}svg text{font-family:inherit;font-weight:800;font-size:19px;fill:var(--ink);paint-order:stroke;stroke:#f4f7fc;stroke-width:6px;stroke-linejoin:round}.prompt{margin:20px 0 12px;font-size:20px;font-weight:800;line-height:1.3}.step{font-size:12px;color:var(--purple);font-weight:800;display:block;margin-bottom:5px;letter-spacing:.5px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.choice{min-height:58px;padding:12px 7px;border:2px solid transparent;border-radius:14px;font-size:16px;font-weight:800;color:var(--ink);background:#ece6ff}.choice:nth-child(2){background:#ffefc0}.choice:nth-child(3){background:#d8f4ee}.choice:not(:disabled):hover{border-color:var(--purple)}.choice.selected{border-color:var(--purple);box-shadow:0 0 0 2px #6941db1c}.choice:disabled:not(.selected){opacity:.58}.receipt{margin:12px 0 0;font-size:14px;color:var(--muted)}.feedback{padding:15px 16px;background:#f6f4fb;border-radius:14px;margin-top:16px;font-size:14px;line-height:1.55}.feedback strong{display:block;font-size:16px;margin-bottom:5px}.feedback.good{background:#eaf8f1}.feedback.good strong{color:var(--green)}.feedback.retry strong{color:var(--red)}.feedback p{margin:4px 0}.next{width:100%;min-height:52px;background:var(--purple);color:white;border:0;border-radius:14px;font-weight:800;margin-top:14px;font-size:16px}.help{margin-top:18px;font-size:13px;color:var(--muted);line-height:1.6}.help summary{cursor:pointer;width:fit-content;font-weight:700;padding:5px 0}.help p{margin:7px 0}.footnote{margin:15px 0 0;font-size:12px;color:var(--muted);line-height:1.5}.results{text-align:center;padding-top:28px}.celebrate{font-size:48px;margin:0}.results h2{font-size:30px;margin:12px 0;text-transform:none}.percent{font-size:64px;letter-spacing:-3px;font-weight:900;color:var(--purple);line-height:1.2}.results p{color:var(--muted);line-height:1.5}.summary{margin:22px 0;text-align:left;border-top:1px solid var(--line)}.review-row{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.6}.review-row b{display:block}.review-row span{color:var(--muted)}@media(max-width:420px){body{padding:12px 10px}.widget{padding:20px 16px;border-radius:22px}.choices{gap:7px}.choice{font-size:14px}.prompt{font-size:18px}.status{margin-top:17px}svg text{font-size:20px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.badge{position:static;display:table;margin:12px 14px 0}
+</style>
+</head>
+<body>
+<main class="widget" aria-labelledby="title">
+<header><p class="eyebrow">Shape detective • 10 rounds</p><h1 id="title">Classify a Triangle</h1><p class="intro">One triangle. Two ways to describe it.<br>Read the numbers and look closely at the shape.</p></header>
+<section id="game" aria-label="Triangle challenge">
+<div class="status"><span id="round"></span><span id="score"></span></div>
+<div class="track" role="progressbar" aria-label="Completed triangles" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><span id="progress"></span></div>
+<div class="drawing"><span class="badge" id="badge"></span><svg id="triangle" viewBox="0 0 480 300" role="img" aria-labelledby="svgTitle svgDesc"><title id="svgTitle">Triangle to classify</title><desc id="svgDesc"></desc><g id="geometry"></g></svg></div>
+<div id="question" tabindex="-1"><h2 class="prompt"><span class="step" id="step"></span><span id="prompt"></span></h2></div>
+<div id="choices" class="choices" role="group" aria-label="Answer choices"></div>
+<p id="receipt" class="receipt" hidden></p>
+<div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+<button id="next" class="next" hidden>Next triangle →</button>
+<details class="help"><summary>Need a reminder?</summary><p><b>Acute:</b> every angle is less than 90°. <b>Right:</b> one angle is 90° (look for the square). <b>Obtuse:</b> one angle is greater than 90°.</p><p><b>Scalene:</b> all sides are different. <b>Isosceles:</b> two sides match. <b>Equilateral:</b> all three sides match.</p><p>Equal angles face equal sides. When only sides are labeled, use the drawing to decide the angle type.</p></details>
+<p class="footnote">Both answers must be correct to earn a point. Take your time!</p>
+</section>
+<section id="results" class="results" aria-labelledby="resultTitle" hidden><p class="celebrate" aria-hidden="true" id="emoji"></p><div class="percent" id="percent"></div><h2 id="resultTitle" tabindex="-1"></h2><p id="resultDetail"></p><button id="restart" class="next">Play again ↻</button><details class="help" style="text-align:left"><summary>Review my answers</summary><div id="review" class="summary"></div></details><p class="footnote">Your results stay in this page. Refreshing starts a new game.</p></section>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const rand=(lo,hi)=>Math.floor(Math.random()*(hi-lo+1))+lo;
+const pick=items=>items[rand(0,items.length-1)];
+const shuffle=items=>{for(let i=items.length-1;i>0;i--){const j=rand(0,i);[items[i],items[j]]=[items[j],items[i]];}return items;};
+// Each family is geometrically possible. All seven combinations appear every game.
+const families=[['acute','scalene'],['acute','isosceles'],['acute','equilateral'],['right','scalene'],['right','isosceles'],['obtuse','scalene'],['obtuse','isosceles']];
+let deck=[],index=0,points=0,stage='angle',answerAngle=null,history=[];
+function makeTriangle(family,mode){
+ const [angleType,sideType]=family;
+ let angles,sides;
+ if(angleType==='right'&&sideType==='isosceles')mode='angles';
+ if(mode==='angles'){
+  if(sideType==='equilateral')angles=[60,60,60];
+  else if(sideType==='isosceles'){
+   const base=angleType==='right'?45:angleType==='acute'?pick(Array.from({length:25},(_,i)=>48+i).filter(a=>a!==60)):rand(25,38);
+   angles=[base,base,180-2*base];
+  }else if(angleType==='right'){const a=pick([28,32,36,40]);angles=[a,90-a,90];}
+  else if(angleType==='obtuse'){const a=rand(25,34),b=rand(39,46);angles=[a,b,180-a-b];}
+  else{const a=rand(42,49),b=rand(56,61);angles=[a,b,180-a-b];}
+  shuffle(angles);sides=angles.map(a=>Math.sin(a*Math.PI/180));
+ }else{
+  if(sideType==='equilateral'){const n=rand(4,12);sides=[n,n,n];}
+  else if(sideType==='isosceles'){sides=angleType==='acute'?pick([[5,5,6],[6,6,4],[7,7,8]]).slice():pick([[5,5,8],[6,6,10],[7,7,12]]).slice();}
+  else{sides=(angleType==='right'?[3,4,5]:angleType==='acute'?pick([[5,6,7],[6,7,8],[7,8,9]]):pick([[3,5,7],[4,5,8],[5,6,9]])).slice();}
+  const scale=rand(1,2);sides=sides.map(s=>s*scale);shuffle(sides);
+  angles=sides.map((s,i)=>{const a=sides[(i+1)%3],b=sides[(i+2)%3];return Math.acos(Math.max(-1,Math.min(1,(a*a+b*b-s*s)/(2*a*b))))*180/Math.PI;});
+ }
+ return {angleType,sideType,angles,sides,mode,rotation:Math.random()*Math.PI*2,reflect:Math.random()<.5?-1:1};
+}
+const unit=(x,y)=>{const n=Math.hypot(x,y);return [x/n,y/n];};
+function draw(t){
+ // Side i is opposite vertex i. Construct the exact triangle, then rotate and fit.
+ const [a,b,c]=t.sides,x=(b*b+c*c-a*a)/(2*c),y=Math.sqrt(Math.max(0,b*b-x*x));
+ let p=[[0,0],[c,0],[x,y]].map(([px,py])=>[px*Math.cos(t.rotation)-py*t.reflect*Math.sin(t.rotation),px*Math.sin(t.rotation)+py*t.reflect*Math.cos(t.rotation)]);
+ const xs=p.map(v=>v[0]),ys=p.map(v=>v[1]),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ const scale=Math.min(300/(maxX-minX),190/(maxY-minY));
+ p=p.map(([px,py])=>[240+(px-(minX+maxX)/2)*scale,155+(py-(minY+maxY)/2)*scale]);
+ const center=[p.reduce((s,v)=>s+v[0],0)/3,p.reduce((s,v)=>s+v[1],0)/3];
+ let markup=`<polygon points="${p.map(v=>v.join(',')).join(' ')}" fill="#cbbcff" fill-opacity=".55" stroke="#6240bb" stroke-width="3.5" stroke-linejoin="round"/>`;
+ for(let i=0;i<3;i++){
+  if(Math.abs(t.angles[i]-90)<.00001){const v=p[i],u=unit(p[(i+1)%3][0]-v[0],p[(i+1)%3][1]-v[1]),w=unit(p[(i+2)%3][0]-v[0],p[(i+2)%3][1]-v[1]),n=14;markup+=`<polyline points="${[ [v[0]+u[0]*n,v[1]+u[1]*n],[v[0]+(u[0]+w[0])*n,v[1]+(u[1]+w[1])*n],[v[0]+w[0]*n,v[1]+w[1]*n] ].map(v=>v.join(',')).join(' ')}" fill="none" stroke="#6240bb" stroke-width="2.5"/>`;}
+  let pos,label;
+  if(t.mode==='angles'){const u=unit(p[i][0]-center[0],p[i][1]-center[1]);pos=[p[i][0]+u[0]*29,p[i][1]+u[1]*29];label=Math.round(t.angles[i])+'°';}
+  else{const v=p[(i+1)%3],w=p[(i+2)%3],mid=[(v[0]+w[0])/2,(v[1]+w[1])/2];let u=unit(-(w[1]-v[1]),w[0]-v[0]);if(u[0]*(mid[0]-center[0])+u[1]*(mid[1]-center[1])<0)u=u.map(n=>-n);pos=[mid[0]+u[0]*24,mid[1]+u[1]*24];label=t.sides[i];}
+  markup+=`<text x="${pos[0]}" y="${pos[1]}" text-anchor="middle" dominant-baseline="central">${label}</text>`;
+ }
+ $('geometry').innerHTML=markup;
+ $('svgDesc').textContent=t.mode==='angles'?`Triangle with angles ${t.angles.join(', ')} degrees. Equal angles face equal sides.`:`Triangle with side lengths ${t.sides.join(', ')} units. The drawing shows angle sizes accurately.${t.angleType==='right'?' A square marks a 90-degree angle.':''}`;
+ $('badge').textContent=t.mode==='angles'?'Angles in degrees':'Side lengths in units';
+}
+function setChoices(){
+ $('step').textContent=stage==='angle'?'STEP 1 OF 2 • ANGLES':'STEP 2 OF 2 • SIDES';
+ $('prompt').textContent=stage==='angle'?'What kind of angles does it have?':'What kind of sides does it have?';
+ $('choices').setAttribute('aria-label',stage==='angle'?'Classify by angle':'Classify by sides');
+ $('choices').replaceChildren();
+ for(const value of stage==='angle'?['acute','right','obtuse']:['scalene','isosceles','equilateral']){
+  const button=document.createElement('button');button.className='choice';button.textContent=value[0].toUpperCase()+value.slice(1);button.onclick=()=>answer(value,button);$('choices').append(button);
+ }
+}
+function showRound(focus=false){
+ stage='angle';answerAngle=null;$('receipt').hidden=true;$('feedback').hidden=true;$('next').hidden=true;
+ $('round').textContent=`Triangle ${index+1} of 10`;$('score').textContent=`${points} / 10 points`;
+ $('progress').style.width=(index*10)+'%';document.querySelector('.track').setAttribute('aria-valuenow',index);
+ draw(deck[index]);setChoices();if(focus)$('question').focus();
+}
+function angleExplanation(t){if(t.angleType==='right')return 'Right: one angle is 90°, marked with a square.';if(t.angleType==='obtuse')return t.mode==='angles'?`Obtuse: the ${Math.max(...t.angles)}° angle is greater than 90°.`:'Obtuse: one angle opens wider than a 90° corner.';return 'Acute: every angle is less than 90°.';}
+function sideExplanation(t){const name=t.sideType[0].toUpperCase()+t.sideType.slice(1);const reason=t.sideType==='equilateral'?'all three sides match':t.sideType==='isosceles'?'two sides match':'all three sides are different';const infer=t.mode==='angles'?(t.sideType==='scalene'?'Different angles face different sides.':'Equal angles face equal sides.') :'';return `${name}: ${reason}. ${infer}`;}
+function answer(value,button){
+ const t=deck[index];
+ if(stage==='angle'){answerAngle=value;stage='sides';$('receipt').textContent=`Your angle answer: ${value}. Now classify the sides.`;$('receipt').hidden=false;setChoices();$('question').focus();return;}
+ if(stage!=='sides')return;stage='done';
+ const correct=answerAngle===t.angleType&&value===t.sideType;if(correct)points++;
+ history.push({t,angle:answerAngle,side:value,correct});
+ for(const b of $('choices').children)b.disabled=true;button.classList.add('selected');
+ $('score').textContent=`${points} / 10 points`;$('progress').style.width=((index+1)*10)+'%';document.querySelector('.track').setAttribute('aria-valuenow',index+1);
+ const aOK=answerAngle===t.angleType,sOK=value===t.sideType;
+ $('feedback').className='feedback '+(correct?'good':'retry');
+ $('feedback').innerHTML=`<strong>${correct?'You got both! +1 point':'Keep learning—here’s the reasoning.'}</strong><p>${aOK?'✓':'✗'} ${angleExplanation(t)}</p><p>${sOK?'✓':'✗'} ${sideExplanation(t)}</p>${correct?'':'<p>Both answers need to match to earn this point.</p>'}`;
+ $('feedback').hidden=false;$('next').textContent=index===9?'See my results →':'Next triangle →';$('next').hidden=false;
+}
+function finish(){
+ $('game').hidden=true;$('results').hidden=false;const percent=points*10;
+ $('percent').textContent=percent+'%';$('resultTitle').textContent=percent>=90?'you dominated':percent>=70?'you are almost there':'keep working on it';$('emoji').textContent=percent>=90?'🏆':percent>=70?'🌟':'🌱';
+ $('resultDetail').textContent=`You classified ${points} of 10 triangles correctly by both angles and sides.`;
+ $('review').replaceChildren();history.forEach((r,i)=>{const row=document.createElement('div');row.className='review-row';const b=document.createElement('b');b.textContent=`${r.correct?'✓':'✗'} Triangle ${i+1}: ${r.t.angleType} + ${r.t.sideType}`;const span=document.createElement('span');span.textContent=`Your answers: ${r.angle} + ${r.side}.`;row.append(b,span);$('review').append(row);});$('resultTitle').focus();
+}
+function start(focus=false){
+ index=0;points=0;history=[];const selected=families.map(f=>f.slice());while(selected.length<10)selected.push(pick(families).slice());
+ // Five side-labeled and five angle-labeled rounds; right isosceles uses exact angle labels.
+ shuffle(selected);const eligible=shuffle(selected.map((f,i)=>i).filter(i=>!(selected[i][0]==='right'&&selected[i][1]==='isosceles')));const sideIndices=new Set(eligible.slice(0,5));
+ deck=selected.map((f,i)=>makeTriangle(f,sideIndices.has(i)?'sides':'angles'));
+ $('results').hidden=true;$('game').hidden=false;showRound(focus);
+}
+$('next').onclick=()=>{if(stage!=='done')return;index++;if(index===10)finish();else showRound(true);};$('restart').onclick=()=>start(true);start();
+</script>
+</body>
+</html>
